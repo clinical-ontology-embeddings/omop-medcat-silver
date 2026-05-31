@@ -1,0 +1,14 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+*.pyo
+*.log
+*.tmp
+data/
+experiments/
+manifests/
+*.jsonl
+!examples/synthetic_text_concept_dataset.jsonl
+summary.json
+medcat_omop_snomed_condition_cdb/

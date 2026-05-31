@@ -1,0 +1,536 @@
+{
+  "dataset_name": "omop-medcat-silver-full-v1",
+  "release_type": "regeneration_recipe_only",
+  "public_distribution": {
+    "dataset_jsonl": "not_included",
+    "medcat_cdb": "not_included",
+    "reason": "The generated JSONL contains MIMIC-derived sentence text, note IDs, subject IDs, admission IDs, and mention offsets. Public GitHub distribution is limited to code, documentation, and aggregate metadata."
+  },
+  "required_inputs": [
+    {
+      "name": "MIMIC-IV-Note discharge notes",
+      "path": "data/01_raw/mimic-iv-note/2.2/note/discharge.csv.gz",
+      "access": "PhysioNet credentialed access required; not redistributed by this repository."
+    },
+    {
+      "name": "OMOP vocabulary v5",
+      "path": "data/01_raw/vocabulary_v5",
+      "access": "Local OHDSI/OMOP vocabulary download required; not redistributed by this repository."
+    }
+  ],
+  "regeneration_command": [
+    "python3",
+    "scripts/build_medcat_silver_dataset.py",
+    "--note-file",
+    "data/01_raw/mimic-iv-note/2.2/note/discharge.csv.gz",
+    "--out-root",
+    "data/03_processed/text_concept_dataset/medcat_silver_full_v1",
+    "--cdb-path",
+    "data/03_processed/text_concept_dataset/medcat_silver_v1/medcat_omop_snomed_condition_cdb",
+    "--max-notes",
+    "0",
+    "--min-sentence-words",
+    "6",
+    "--max-sentences-per-note",
+    "20"
+  ],
+  "expected_output": {
+    "path": "data/03_processed/text_concept_dataset/medcat_silver_full_v1/text_concept_dataset.jsonl",
+    "schema": {
+      "unit": "sentence_or_short_clinical_statement",
+      "positive_labels": "OMOP SNOMED Condition concept_ids for present mentions",
+      "hard_negative_labels": "negated mention concept_ids retained for diagnostics/training",
+      "row_level_fields_not_public": [
+        "note_id",
+        "subject_id",
+        "hadm_id",
+        "text",
+        "mentions",
+        "hard_negative_mentions"
+      ]
+    }
+  },
+  "output_statistics": {
+    "label_source": "medcat_omop_snomed_condition",
+    "note_scope": "discharge",
+    "medcat_version": "2.7.0",
+    "source_notes": 331793,
+    "notes_with_mentions": 331792,
+    "skipped_no_sentence_mentions": 1,
+    "written_rows": 2266848,
+    "unique_concepts": 11629,
+    "unique_hard_negative_concepts": 3725,
+    "label_count_histogram": {
+      "1": 1300297,
+      "2": 527827,
+      "3": 194652,
+      "4": 93995,
+      "5": 49959,
+      "6": 30495,
+      "7": 19462,
+      "8": 13369,
+      "9": 9351,
+      "10": 6380,
+      "11": 4765,
+      "12": 3471,
+      "13": 2651,
+      "14": 1979,
+      "15": 1734,
+      "16": 1279,
+      "17": 1543,
+      "18": 1379,
+      "19": 467,
+      "20": 294,
+      "21": 229,
+      "22": 171,
+      "23": 119,
+      "24": 84,
+      "25": 144,
+      "26": 53,
+      "27": 40,
+      "28": 151,
+      "29": 37,
+      "30": 17,
+      "31": 16,
+      "32": 10,
+      "33": 19,
+      "34": 8,
+      "35": 6,
+      "36": 4,
+      "37": 8,
+      "38": 7,
+      "39": 5,
+      "40": 7,
+      "41": 31,
+      "42": 14,
+      "43": 12,
+      "44": 251,
+      "45": 35,
+      "46": 12,
+      "47": 6,
+      "48": 2,
+      "49": 1
+    },
+    "mention_confidence_histogram": {
+      "1.0-1.1": 4575824
+    },
+    "top_concepts": [
+      {
+        "concept_id": 4329041,
+        "mention_count": 281792
+      },
+      {
+        "concept_id": 31967,
+        "mention_count": 92257
+      },
+      {
+        "concept_id": 316866,
+        "mention_count": 90658
+      },
+      {
+        "concept_id": 312437,
+        "mention_count": 80143
+      },
+      {
+        "concept_id": 200219,
+        "mention_count": 76054
+      },
+      {
+        "concept_id": 441408,
+        "mention_count": 71622
+      },
+      {
+        "concept_id": 433595,
+        "mention_count": 66161
+      },
+      {
+        "concept_id": 440383,
+        "mention_count": 64118
+      },
+      {
+        "concept_id": 254761,
+        "mention_count": 62890
+      },
+      {
+        "concept_id": 77670,
+        "mention_count": 60841
+      },
+      {
+        "concept_id": 75053,
+        "mention_count": 52833
+      },
+      {
+        "concept_id": 437663,
+        "mention_count": 52800
+      },
+      {
+        "concept_id": 4102111,
+        "mention_count": 51305
+      },
+      {
+        "concept_id": 196523,
+        "mention_count": 47460
+      },
+      {
+        "concept_id": 437312,
+        "mention_count": 45544
+      },
+      {
+        "concept_id": 441542,
+        "mention_count": 42449
+      },
+      {
+        "concept_id": 4275722,
+        "mention_count": 42157
+      },
+      {
+        "concept_id": 432867,
+        "mention_count": 40262
+      },
+      {
+        "concept_id": 378253,
+        "mention_count": 39297
+      },
+      {
+        "concept_id": 4168335,
+        "mention_count": 38163
+      },
+      {
+        "concept_id": 439777,
+        "mention_count": 36562
+      },
+      {
+        "concept_id": 317009,
+        "mention_count": 33974
+      },
+      {
+        "concept_id": 4226399,
+        "mention_count": 32269
+      },
+      {
+        "concept_id": 134736,
+        "mention_count": 27823
+      },
+      {
+        "concept_id": 381316,
+        "mention_count": 27430
+      },
+      {
+        "concept_id": 4223938,
+        "mention_count": 26899
+      },
+      {
+        "concept_id": 140673,
+        "mention_count": 26599
+      },
+      {
+        "concept_id": 313217,
+        "mention_count": 25678
+      },
+      {
+        "concept_id": 377091,
+        "mention_count": 25643
+      },
+      {
+        "concept_id": 255848,
+        "mention_count": 24617
+      },
+      {
+        "concept_id": 433736,
+        "mention_count": 24171
+      },
+      {
+        "concept_id": 75860,
+        "mention_count": 23684
+      },
+      {
+        "concept_id": 4082445,
+        "mention_count": 22146
+      },
+      {
+        "concept_id": 4177703,
+        "mention_count": 22092
+      },
+      {
+        "concept_id": 4192640,
+        "mention_count": 22046
+      },
+      {
+        "concept_id": 4090431,
+        "mention_count": 22036
+      },
+      {
+        "concept_id": 36716620,
+        "mention_count": 21493
+      },
+      {
+        "concept_id": 137193,
+        "mention_count": 20257
+      },
+      {
+        "concept_id": 4112853,
+        "mention_count": 19763
+      },
+      {
+        "concept_id": 444202,
+        "mention_count": 19755
+      },
+      {
+        "concept_id": 4332246,
+        "mention_count": 19668
+      },
+      {
+        "concept_id": 4182210,
+        "mention_count": 19631
+      },
+      {
+        "concept_id": 4301699,
+        "mention_count": 18402
+      },
+      {
+        "concept_id": 4185563,
+        "mention_count": 17960
+      },
+      {
+        "concept_id": 317576,
+        "mention_count": 17803
+      },
+      {
+        "concept_id": 4299449,
+        "mention_count": 17407
+      },
+      {
+        "concept_id": 312349,
+        "mention_count": 17113
+      },
+      {
+        "concept_id": 4291025,
+        "mention_count": 16973
+      },
+      {
+        "concept_id": 194990,
+        "mention_count": 16873
+      },
+      {
+        "concept_id": 432795,
+        "mention_count": 16061
+      }
+    ],
+    "top_hard_negative_concepts": [
+      {
+        "concept_id": 441408,
+        "mention_count": 12781
+      },
+      {
+        "concept_id": 433595,
+        "mention_count": 11277
+      },
+      {
+        "concept_id": 4329041,
+        "mention_count": 10327
+      },
+      {
+        "concept_id": 77670,
+        "mention_count": 8083
+      },
+      {
+        "concept_id": 4082445,
+        "mention_count": 7410
+      },
+      {
+        "concept_id": 31967,
+        "mention_count": 7352
+      },
+      {
+        "concept_id": 4239819,
+        "mention_count": 6779
+      },
+      {
+        "concept_id": 312437,
+        "mention_count": 5897
+      },
+      {
+        "concept_id": 137193,
+        "mention_count": 5128
+      },
+      {
+        "concept_id": 437663,
+        "mention_count": 4938
+      },
+      {
+        "concept_id": 196523,
+        "mention_count": 4784
+      },
+      {
+        "concept_id": 200219,
+        "mention_count": 4641
+      },
+      {
+        "concept_id": 437312,
+        "mention_count": 4309
+      },
+      {
+        "concept_id": 254761,
+        "mention_count": 3871
+      },
+      {
+        "concept_id": 197684,
+        "mention_count": 3138
+      },
+      {
+        "concept_id": 438555,
+        "mention_count": 2854
+      },
+      {
+        "concept_id": 4188566,
+        "mention_count": 2845
+      },
+      {
+        "concept_id": 315078,
+        "mention_count": 2608
+      },
+      {
+        "concept_id": 378253,
+        "mention_count": 2541
+      },
+      {
+        "concept_id": 4181178,
+        "mention_count": 2314
+      },
+      {
+        "concept_id": 443392,
+        "mention_count": 2248
+      },
+      {
+        "concept_id": 4275722,
+        "mention_count": 2225
+      },
+      {
+        "concept_id": 140214,
+        "mention_count": 2156
+      },
+      {
+        "concept_id": 440383,
+        "mention_count": 2149
+      },
+      {
+        "concept_id": 4103703,
+        "mention_count": 2146
+      },
+      {
+        "concept_id": 75860,
+        "mention_count": 2117
+      },
+      {
+        "concept_id": 316866,
+        "mention_count": 2106
+      },
+      {
+        "concept_id": 75053,
+        "mention_count": 1900
+      },
+      {
+        "concept_id": 432250,
+        "mention_count": 1848
+      },
+      {
+        "concept_id": 4223938,
+        "mention_count": 1784
+      },
+      {
+        "concept_id": 440921,
+        "mention_count": 1757
+      },
+      {
+        "concept_id": 4185563,
+        "mention_count": 1679
+      },
+      {
+        "concept_id": 443530,
+        "mention_count": 1610
+      },
+      {
+        "concept_id": 4203638,
+        "mention_count": 1514
+      },
+      {
+        "concept_id": 437038,
+        "mention_count": 1458
+      },
+      {
+        "concept_id": 192956,
+        "mention_count": 1416
+      },
+      {
+        "concept_id": 4167669,
+        "mention_count": 1388
+      },
+      {
+        "concept_id": 4102111,
+        "mention_count": 1368
+      },
+      {
+        "concept_id": 441542,
+        "mention_count": 1344
+      },
+      {
+        "concept_id": 4274025,
+        "mention_count": 1311
+      },
+      {
+        "concept_id": 315361,
+        "mention_count": 1236
+      },
+      {
+        "concept_id": 135360,
+        "mention_count": 1235
+      },
+      {
+        "concept_id": 439777,
+        "mention_count": 1210
+      },
+      {
+        "concept_id": 4299449,
+        "mention_count": 1199
+      },
+      {
+        "concept_id": 444035,
+        "mention_count": 1173
+      },
+      {
+        "concept_id": 137977,
+        "mention_count": 1172
+      },
+      {
+        "concept_id": 4096862,
+        "mention_count": 1093
+      },
+      {
+        "concept_id": 4276172,
+        "mention_count": 1085
+      },
+      {
+        "concept_id": 432867,
+        "mention_count": 1082
+      },
+      {
+        "concept_id": 4116987,
+        "mention_count": 1079
+      }
+    ],
+    "vocabulary_filter": "domain_id=Condition; vocabulary_id=SNOMED; standard_concept=S; invalid_reason IS NULL",
+    "max_notes": 0,
+    "include_negated": false
+  },
+  "public_safety_checks": [
+    "Do not commit text_concept_dataset.jsonl.",
+    "Do not commit private generation summary files containing example rows.",
+    "Do not commit MedCAT CDB/model-pack files built from restricted vocabularies.",
+    "Run the focused tests before publishing recipe changes."
+  ],
+  "official_source_references": [
+    "https://physionet.org/content/mimic-iv-note/",
+    "https://www.physionet.org/content/mimiciv/1.0/",
+    "https://physionet.org/content/mimiciv/view-dua/1.0/"
+  ]
+}

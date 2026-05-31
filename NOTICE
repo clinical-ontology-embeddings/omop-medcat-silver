@@ -1,0 +1,16 @@
+NOTICE
+
+This repository is a public regeneration recipe for the OMOP MedCAT Silver
+dataset. It intentionally excludes generated MIMIC-derived rows:
+- data/01_raw/mimic-iv-note/
+- data/03_processed/text_concept_dataset/medcat_silver_full_v1/text_concept_dataset.jsonl
+- data/03_processed/text_concept_dataset/medcat_silver_full_v1/reports/summary.json
+- medcat_omop_snomed_condition_cdb artifacts
+
+The published content is limited to code, documentation, tests, and the
+aggregate public manifest:
+- docs/dataset/medcat_silver_full_v1_public_manifest.json
+
+The `examples/` directory contains fabricated JSONL rows for schema inspection
+only. These examples are not MIMIC-derived and are not part of the generated
+private dataset.

@@ -1,0 +1,35 @@
+# OMOP MedCAT Silver environment.
+# Python: 3.11
+#
+# The public repository is recipe-only: generated clinical rows, local
+# summaries, and MedCAT CDB/model-pack artifacts are not distributed. These
+# pins cover local CDB construction, MedCAT annotation, public manifest
+# generation, tests, and downstream training-data inspection.
+
+# Public recipe, tests, and release-boundary checks.
+pytest==9.0.3
+
+# MedCAT CDB construction and local annotation.
+medcat==2.7.0
+spacy==3.8.14
+
+# Scientific/data runtime for generation summaries and downstream adapters.
+numpy==2.1.2
+pandas==2.3.3
+scipy==1.15.3
+scikit-learn==1.7.2
+joblib==1.4.2
+tqdm==4.67.1
+PyYAML==6.0.3
+pyarrow==18.1.0
+duckdb==1.1.3
+
+# Optional neural stack for consumers that pretrain or fine-tune concept
+# linkers on regenerated private rows.
+torch==2.10.0
+transformers==5.5.4
+huggingface-hub==1.1.2
+tokenizers==0.22.1
+safetensors==0.6.2
+sentence-transformers==5.1.2
+accelerate==1.11.0
