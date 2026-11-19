@@ -888,3 +888,57 @@ def test_build_medcat_silver_dataset_stops_negation_scope_at_but_has(tmp_path):
     ]
     assert rows[0]["concept_ids"] == [111]
     assert rows[0]["hard_negative_concept_ids"] == [433595]
+
+
+def test_build_medcat_silver_dataset_include_negated_records_rule_based_negation(tmp_path):
+    note_file = tmp_path / "discharge.csv"
+    out_root = tmp_path / "silver"
+    with note_file.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["note_id", "subject_id", "hadm_id", "note_type", "note_seq", "charttime", "storetime", "text"],
+        )
+        writer.writeheader()
+        writer.writerow(
+            {
+                "note_id": "n1",
+                "subject_id": "10",
+                "hadm_id": "100",
+                "note_type": "DS",
+                "note_seq": "1",
+                "charttime": "2026-01-01 00:00:00",
+                "storetime": "",
+                "text": "She denies edema but has pneumonia.",
+            }
+        )
+
+    def fake_annotator(text: str):
+        return [
+            MedcatMention(
+                start=text.index(word),
+                end=text.index(word) + len(word),
+                text=word,
+                concept_id=concept_id,
+                concept_name=name,
+                confidence=1.0,
+                negated=False,
+            )
+            for word, concept_id, name in [("edema", 433595, "Edema"), ("pneumonia", 111, "Pneumonia")]
+        ]
+
+    build_medcat_silver_dataset(
+        note_file=note_file,
+        out_root=out_root,
+        annotator=fake_annotator,
+        medcat_version="fake-test",
+        min_sentence_words=3,
+        max_sentences_per_note=0,
+        include_negated=True,
+    )
+
+    rows = [json.loads(line) for line in (out_root / "text_concept_dataset.jsonl").read_text().splitlines()]
+    assert rows[0]["concept_ids"] == [111, 433595]
+    assert rows[0]["hard_negative_concept_ids"] == []
+    flags = {m["text"]: (m["negated"], m["assertion"]) for m in rows[0]["mentions"]}
+    # Rule-based negation ("denies") must survive into the positive mention record.
+    assert flags == {"edema": (True, "negated"), "pneumonia": (False, "present")}

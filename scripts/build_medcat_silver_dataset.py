@@ -10,7 +10,7 @@ import json
 import re
 import sys
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Callable, Iterable
 
@@ -416,8 +416,9 @@ def build_medcat_silver_dataset(
                 sentence_mentions = _prune_generic_mentions(sentence_mentions)
                 if not sentence_mentions:
                     continue
+                # Carry the combined MedCAT + rule negation into the kept mention record.
                 positive_mentions = [
-                    mention
+                    replace(mention, negated=True) if is_negated else mention
                     for mention, is_negated in sentence_mentions
                     if include_negated or not is_negated
                 ]
@@ -532,7 +533,7 @@ def _build_row(
                 "concept_name": canonical_concept_names.get(mention.concept_id, mention.concept_name),
                 "confidence": mention.confidence,
                 "negated": mention.negated,
-                "assertion": "present",
+                "assertion": "negated" if mention.negated else "present",
             }
             for mention in ordered_mentions
         ],
